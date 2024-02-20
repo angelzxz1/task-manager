@@ -7,14 +7,13 @@ export async function DELETE(
     { params }: { params: { id: string } }
 ) {
     try {
-        const {} = await currentProfile();
+        const profile = await currentProfile();
         const { id } = params;
 
-        if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
-        }
-
-        const task = await prisma.task.delete({
+        if (!profile) return new NextResponse("Unauthorized", { status: 401 });
+        if (!id)
+            return new NextResponse("No task ID provided", { status: 400 });
+        const task = await db.sampleData.delete({
             where: {
                 id,
             },
