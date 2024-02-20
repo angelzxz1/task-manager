@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import {} from "@/lib/current-profile";
+import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 
 export async function DELETE(
@@ -7,6 +7,7 @@ export async function DELETE(
     { params }: { params: { id: string } }
 ) {
     try {
+        const {} = await currentProfile();
         const { id } = params;
 
         if (!userId) {
