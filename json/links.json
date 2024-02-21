@@ -1,0 +1,24 @@
+{
+    "links": [
+        {
+            "name": "All Tasks",
+            "url": "/",
+            "icon": "home"
+        },
+        {
+            "name": "Important",
+            "url": "/important",
+            "icon": "important"
+        },
+        {
+            "name": "Completed",
+            "url": "/completed",
+            "icon": "completed"
+        },
+        {
+            "name": "Do it now",
+            "url": "/doitnow",
+            "icon": "doitnow"
+        }
+    ]
+}

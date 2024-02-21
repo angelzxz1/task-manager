@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GlobalProvider } from "@/context/global-provider";
+import NextTopLoader from "nextjs-toploader";
+import { NavBar } from "@/components/nav-bar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +21,19 @@ export default function RootLayout({
         <ClerkProvider>
             <GlobalProvider>
                 <html lang="en">
-                    <body className={inter.className}>{children}</body>
+                    <body className={`${inter.className} flex`}>
+                        <NextTopLoader
+                            height={2}
+                            color="red"
+                            easing="ease-in-out"
+                        />
+                        <main className="w-full h-full flex gap-10 p-10">
+                            <NavBar />
+                            <section className="flex-1 border rounded-lg">
+                                {children}
+                            </section>
+                        </main>
+                    </body>
                 </html>
             </GlobalProvider>
         </ClerkProvider>
