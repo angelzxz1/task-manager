@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { GlobalProvider } from "@/context/global-provider";
 import NextTopLoader from "nextjs-toploader";
 import { NavBar } from "@/components/nav-bar";
+import { AddTaskButton } from "@/components/add-task";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -29,8 +30,9 @@ export default function RootLayout({
                         />
                         <main className="w-full h-full flex gap-10 p-10">
                             <NavBar />
-                            <section className="flex-1 border rounded-lg">
+                            <section className="flex-1 border rounded-lg relative">
                                 {children}
+                                <AddTaskButton />
                             </section>
                         </main>
                     </body>
