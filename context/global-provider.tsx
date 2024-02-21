@@ -1,6 +1,6 @@
 "use client";
 
-import { SampleData } from "@prisma/client";
+import { SampleData, Task } from "@prisma/client";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -60,16 +60,16 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
             //   toast.error("Something went wrong");
         }
     };
-    const updateTask = async (task: Tas) => {
+    const updateTask = async (task: Task) => {
         try {
             const res = await axios.put(`/api/tasks`, task);
 
-            toast.success("Task updated");
+            // toast.success("Task updated");
 
             allTasks();
         } catch (error) {
             console.log(error);
-            toast.error("Something went wrong");
+            // toast.error("Something went wrong");
         }
     };
 
