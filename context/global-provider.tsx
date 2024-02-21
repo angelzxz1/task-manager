@@ -20,6 +20,13 @@ export const GlobalUpdateContext = createContext<GlobalUpdateContextType>({
 export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     const [tasksList, setTasksList] = useState<SampleData[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [modal, setModal] = useState(false);
+    const openModal = () => {
+        setModal(true);
+    };
+    const closeModal = () => {
+        setModal(false);
+    };
     const allTasks = async () => {
         setIsLoading(true);
         try {
@@ -42,7 +49,17 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
             console.log(error);
         }
     };
+    const deleteTask = async (id: string) => {
+        try {
+            const res = await axios.delete(`/api/tasks/${id}`);
+            //   toast.success("Task deleted");
 
+            allTasks();
+        } catch (error) {
+            console.log(error);
+            //   toast.error("Something went wrong");
+        }
+    };
     useEffect(() => {
         allTasks();
     }, []);
