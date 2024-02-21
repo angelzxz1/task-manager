@@ -60,6 +60,19 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
             //   toast.error("Something went wrong");
         }
     };
+    const updateTask = async (task: Tas) => {
+        try {
+            const res = await axios.put(`/api/tasks`, task);
+
+            toast.success("Task updated");
+
+            allTasks();
+        } catch (error) {
+            console.log(error);
+            toast.error("Something went wrong");
+        }
+    };
+
     useEffect(() => {
         allTasks();
     }, []);
