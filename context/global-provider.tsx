@@ -1,24 +1,45 @@
 "use client";
 
-import { SampleData, Task } from "@prisma/client";
+import { Task, TaskStatus } from "@prisma/client";
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type GlobalContextType = {
-    tasksList: SampleData[];
+    tasksList: Task[];
+    deleteTask: (id: string) => void;
+    isLoading: boolean;
+    completedTasks: Task[];
+    importantTasks: Task[];
+    incompleteTasks: Task[];
+    updateTask: (task: Task) => void;
+    modal: boolean;
+    openModal: () => void;
+    closeModal: () => void;
+    allTasks: () => void;
 };
 type GlobalUpdateContextType = {
-    setTasksList: (tasksList: SampleData[]) => void;
+    setTasksList: (tasksList: Task[]) => void;
 };
 export const GlobalContext = createContext<GlobalContextType>({
     tasksList: [],
+    deleteTask: () => {},
+    isLoading: false,
+    completedTasks: [],
+    importantTasks: [],
+    incompleteTasks: [],
+    updateTask: () => {},
+    modal: false,
+    openModal: () => {},
+    closeModal: () => {},
+    allTasks: () => {},
+
 });
 export const GlobalUpdateContext = createContext<GlobalUpdateContextType>({
     setTasksList: () => {},
 });
 
 export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
-    const [tasksList, setTasksList] = useState<SampleData[]>([]);
+    const [tasksList, setTasksList] = useState<Task[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [modal, setModal] = useState(false);
     const openModal = () => {
@@ -32,7 +53,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const res = await axios.get<{
                 message: string;
-                tasks: SampleData[];
+                tasks: Task[];
             }>("/api/tasks");
 
             const sorted = res.data.tasks.sort((a, b) => {
@@ -72,12 +93,24 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
             // toast.error("Something went wrong");
         }
     };
-
+    const completedTasks = tasksList.filter((task) => task.status === TaskStatus.COMPLETED);
+    const importantTasks = tasksList.filter((task) => task.status === TaskStatus.);
+    const incompleteTasks = tasksList.filter((task) => task.status === TaskStatus.);
     useEffect(() => {
         allTasks();
     }, []);
     return (
-        <GlobalContext.Provider value={{ tasksList }}>
+        <GlobalContext.Provider value={{ tasksList,
+            deleteTask,
+            isLoading,
+            completedTasks,
+            importantTasks,
+            incompleteTasks,
+            updateTask,
+            modal,
+            openModal,
+            closeModal,
+            allTasks}}>
             <GlobalUpdateContext.Provider value={{ setTasksList }}>
                 {children}
             </GlobalUpdateContext.Provider>

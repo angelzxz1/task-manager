@@ -26,6 +26,7 @@ model User {
 
 enum TaskStatus {
   PENDING
+  IMPORTANT
   IN_PROGRESS
   COMPLETED
 }

@@ -1,13 +1,14 @@
 "use client";
 
-import { GlobalContext } from "@/context/global-provider";
+import { useGlobalContext } from "@/context/global-provider";
 import { ReactNode, useContext, useEffect, useRef } from "react";
 
 export const TaskModal = ({ content }: { content: ReactNode }) => {
+    const { closeModal } = useGlobalContext();
     const modalref = useRef(null);
     useEffect(() => {
         if (modalref.current) {
-            modalref.current.showModal();
+            // modalref.current.showModal();
         }
     }, []);
     return (
