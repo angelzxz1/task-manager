@@ -5,6 +5,7 @@ import {
     Check,
     ClipboardList,
     Home,
+    LayoutList,
     ListOrdered,
     Loader,
     LogOut,
@@ -23,7 +24,8 @@ const icons: iconProps = {
     home: <Home />,
     important: <ListOrdered />,
     completed: <Check />,
-    doitnow: <ClipboardList />,
+    inprogress: <ClipboardList />,
+    pending: <LayoutList />,
 };
 export const NavBar = () => {
     const pathname = usePathname();

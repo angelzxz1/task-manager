@@ -6,6 +6,7 @@ import { GlobalProvider } from "@/context/global-provider";
 import NextTopLoader from "nextjs-toploader";
 import { NavBar } from "@/components/nav-bar";
 import { AddTaskButton } from "@/components/add-task";
+import { TaskModal } from "@/components/modals/add-task";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function RootLayout({
                             <section className="flex-1 border rounded-lg relative">
                                 {children}
                                 <AddTaskButton />
+                                <TaskModal />
                             </section>
                         </main>
                     </body>

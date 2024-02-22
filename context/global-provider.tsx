@@ -10,7 +10,8 @@ type GlobalContextType = {
     isLoading: boolean;
     completedTasks: Task[];
     importantTasks: Task[];
-    incompleteTasks: Task[];
+    inprogress: Task[];
+    pending: Task[];
     updateTask: (task: Task) => void;
     modal: boolean;
     openModal: () => void;
@@ -26,13 +27,13 @@ export const GlobalContext = createContext<GlobalContextType>({
     isLoading: false,
     completedTasks: [],
     importantTasks: [],
-    incompleteTasks: [],
+    inprogress: [],
+    pending: [],
     updateTask: () => {},
     modal: false,
     openModal: () => {},
     closeModal: () => {},
     allTasks: () => {},
-
 });
 export const GlobalUpdateContext = createContext<GlobalUpdateContextType>({
     setTasksList: () => {},
@@ -46,6 +47,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         setModal(true);
     };
     const closeModal = () => {
+        console.log("close");
         setModal(false);
     };
     const allTasks = async () => {
@@ -93,24 +95,39 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
             // toast.error("Something went wrong");
         }
     };
-    const completedTasks = tasksList.filter((task) => task.status === TaskStatus.COMPLETED);
-    const importantTasks = tasksList.filter((task) => task.status === TaskStatus.);
-    const incompleteTasks = tasksList.filter((task) => task.status === TaskStatus.);
+    const completedTasks = tasksList.filter(
+        (task) => task.status === TaskStatus.COMPLETED
+    );
+    const importantTasks = tasksList.filter(
+        (task) => task.status === TaskStatus.IMPORTANT
+    );
+    const inprogress = tasksList.filter(
+        (task) => task.status === TaskStatus.IN_PROGRESS
+    );
+    const pending = tasksList.filter(
+        (task) => task.status === TaskStatus.PENDING
+    );
+
     useEffect(() => {
         allTasks();
     }, []);
     return (
-        <GlobalContext.Provider value={{ tasksList,
-            deleteTask,
-            isLoading,
-            completedTasks,
-            importantTasks,
-            incompleteTasks,
-            updateTask,
-            modal,
-            openModal,
-            closeModal,
-            allTasks}}>
+        <GlobalContext.Provider
+            value={{
+                tasksList,
+                deleteTask,
+                isLoading,
+                completedTasks,
+                importantTasks,
+                inprogress,
+                pending,
+                updateTask,
+                modal,
+                openModal,
+                closeModal,
+                allTasks,
+            }}
+        >
             <GlobalUpdateContext.Provider value={{ setTasksList }}>
                 {children}
             </GlobalUpdateContext.Provider>

@@ -16,9 +16,14 @@
             "icon": "completed"
         },
         {
-            "name": "Do it now",
-            "url": "/doitnow",
-            "icon": "doitnow"
+            "name": "In Progress",
+            "url": "/inprogress",
+            "icon": "inprogress"
+        },
+        {
+            "name": "Pending",
+            "url": "/pending",
+            "icon": "pending"
         }
     ]
 }
