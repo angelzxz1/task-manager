@@ -16,6 +16,17 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "../ui/textarea";
+import { useState } from "react";
+import { Loader } from "lucide-react";
+import { useGlobalContext } from "@/context/global-provider";
 
 const formSchema = z.object({
     title: z.string().min(3).max(255),
@@ -24,6 +35,8 @@ const formSchema = z.object({
 });
 
 export const AddTaskForm = () => {
+    const [loading, setLoading] = useState(false);
+    const { closeModal } = useGlobalContext();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -33,25 +46,56 @@ export const AddTaskForm = () => {
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setLoading(true);
+        try {
+            await axios.post("/api/tasks", values);
+            closeModal();
+        } catch (error) {
+            console.error("Hubo un error");
+        }
+        form.reset();
+        setLoading(false);
     }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="bg-black border rounded-lg p-4 flex flex-col gap-4 w-96"
+            >
                 <FormField
                     control={form.control}
                     name="title"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel htmlFor="title">Title</FormLabel>
-                            <Input {...field} id="title" />
+                            <Input
+                                {...field}
+                                id="title"
+                                placeholder="Buy milk..."
+                            />
                             <FormMessage>
                                 {form.formState.errors.title?.message}
                             </FormMessage>
                         </FormItem>
                     )}
                 />
+                <FormField
+                    control={form.control}
+                    name="content"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel htmlFor="title">Content</FormLabel>
+                            <Textarea {...field} id="content" />
+                            <FormMessage>
+                                {form.formState.errors.title?.message}
+                            </FormMessage>
+                        </FormItem>
+                    )}
+                />
+                <Button disabled={loading}>
+                    {loading ? <Loader className="animate-spin" /> : "Add Task"}
+                </Button>
             </form>
         </Form>
     );

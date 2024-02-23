@@ -12,13 +12,13 @@ const Dialog = React.forwardRef<HTMLDialogElement, DialogProps>(
         return (
             <dialog
                 className={cn(
-                    `h-full w-full bg-black/80 rounded-md p-4 text-white`,
+                    `h-full w-full bg-black/80 rounded-md p-4 text-white z-[998]`,
                     className
                 )}
                 ref={ref}
                 {...props}
             >
-                <div className="flex h-full w-full items-center justify-center bg-red-500">
+                <div className="flex h-full w-full items-center justify-center">
                     {children}
                 </div>
             </dialog>

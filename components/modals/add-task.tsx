@@ -5,6 +5,7 @@ import { ReactNode, useContext, useEffect, useRef } from "react";
 import { Dialog } from "@/components/modal";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
+import { AddTaskForm } from "./add-task-form";
 
 export const TaskModal = ({ children }: { children?: ReactNode }) => {
     const { closeModal, modal, openModal } = useGlobalContext();
@@ -29,7 +30,7 @@ export const TaskModal = ({ children }: { children?: ReactNode }) => {
             >
                 <X />
             </Button>
-
+            <AddTaskForm />
             {children}
         </Dialog>
     );
