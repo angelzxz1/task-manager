@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { TaskStatus } from "@prisma/client";
 import { currentProfile } from "@/lib/current-profile";
 
 interface jsonData {
@@ -9,7 +8,13 @@ interface jsonData {
 
 export async function GET(req: NextRequest) {
     try {
-        const tasks = await db.task.findMany();
+        const user = await currentProfile();
+        if (!user) return new NextResponse("Unauthorized", { status: 401 });
+        const tasks = await db.task.findMany({
+            where: {
+                userId: user.id,
+            },
+        });
         return NextResponse.json({
             message: "List of tasks returned successfully!",
             tasks,

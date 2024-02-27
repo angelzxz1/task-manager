@@ -36,7 +36,7 @@ const formSchema = z.object({
 
 export const AddTaskForm = () => {
     const [loading, setLoading] = useState(false);
-    const { closeModal } = useGlobalContext();
+    const { closeModal, allTasks } = useGlobalContext();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -50,6 +50,7 @@ export const AddTaskForm = () => {
         setLoading(true);
         try {
             await axios.post("/api/tasks", values);
+            allTasks();
             closeModal();
         } catch (error) {
             console.error("Hubo un error");

@@ -47,7 +47,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         setModal(true);
     };
     const closeModal = () => {
-        console.log("close");
         setModal(false);
     };
     const allTasks = async () => {

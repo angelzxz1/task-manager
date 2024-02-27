@@ -11,7 +11,6 @@ export const TaskModal = ({ children }: { children?: ReactNode }) => {
     const { closeModal, modal, openModal } = useGlobalContext();
     const modalref = useRef<HTMLDialogElement>(null);
     useEffect(() => {
-        console.log(modal);
         const modalRef = modalref.current;
         if (!modalRef) return;
         if (modal) {

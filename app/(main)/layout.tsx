@@ -8,9 +8,8 @@ interface LayoutProps {
 const Layout = async ({ children }: LayoutProps) => {
     const profile = await initialProfile();
     return (
-        <main className="flex items-center justify-center h-full">
-            <section></section>
-            <section>{children}</section>
+        <main className="flex items-center justify-center h-full overflow-hidden">
+            {children}
         </main>
     );
 };

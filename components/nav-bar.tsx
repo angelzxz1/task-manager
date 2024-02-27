@@ -34,7 +34,7 @@ export const NavBar = () => {
         setLoading(true);
     }, []);
     return (
-        <nav className="h-full w-1/6 flex border border-violet-300 items-center justify-center rounded-lg flex-col justify-between py-16">
+        <nav className="h-full w-1/6 flex border border-violet-300 items-center rounded-lg flex-col justify-between py-16 bg-zinc-900">
             <div className="min-h-[50px] w-full flex justify-center items-center">
                 {loading ? (
                     <UserButton

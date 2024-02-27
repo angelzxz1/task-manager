@@ -31,7 +31,7 @@ export default function RootLayout({
                         />
                         <main className="w-full h-full flex gap-10 p-10">
                             <NavBar />
-                            <section className="flex-1 border rounded-lg relative">
+                            <section className="flex-1 border rounded-lg relative bg-zinc-900 border-violet-300">
                                 {children}
                                 <AddTaskButton />
                                 <TaskModal />
