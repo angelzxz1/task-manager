@@ -6,7 +6,7 @@ export const TaskCard = ({ task }: { task: Task }) => {
     return (
         <div className="border-violet-300 p-4 bg-zinc-700 border flex flex-col rounded-lg h-64 w-72 justify-between items-stretch">
             <div className="">
-                <h2>{task.title}</h2>
+                <h2 className="text-xl font-bold">{task.title}</h2>
                 <p>{task.content}</p>
             </div>
 

@@ -29,13 +29,14 @@ import { Loader } from "lucide-react";
 import { useGlobalContext } from "@/context/global-provider";
 
 const formSchema = z.object({
-    title: z.string().min(3).max(255),
-    content: z.string().min(0).max(255),
+    title: z.string().min(3).max(100),
+    content: z.string().min(0).max(500),
     status: z.nativeEnum(TaskStatus).default(TaskStatus.PENDING),
 });
 
 export const AddTaskForm = () => {
     const [loading, setLoading] = useState(false);
+    const [length, setLength] = useState(0);
     const { closeModal, allTasks } = useGlobalContext();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -75,6 +76,7 @@ export const AddTaskForm = () => {
                                 id="title"
                                 placeholder="Buy milk..."
                             />
+
                             <FormMessage>
                                 {form.formState.errors.title?.message}
                             </FormMessage>
@@ -88,9 +90,9 @@ export const AddTaskForm = () => {
                         <FormItem>
                             <FormLabel htmlFor="title">Content</FormLabel>
                             <Textarea {...field} id="content" />
-                            <FormMessage>
-                                {form.formState.errors.title?.message}
-                            </FormMessage>
+                            <div className="flex justify-end text-sm">
+                                {form.getValues("content").length}/500
+                            </div>
                         </FormItem>
                     )}
                 />
