@@ -15,6 +15,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface iconProps {
     [key: string]: JSX.Element;
@@ -30,11 +31,24 @@ const icons: iconProps = {
 export const NavBar = () => {
     const pathname = usePathname();
     const [loading, setLoading] = useState(false);
+    const [user, setUser] = useState<boolean>(false);
     useEffect(() => {
+        axios
+            .get<{ message: string }>("/api/user")
+            .then((res) => {
+                setUser(true);
+            })
+            .catch((error) => {
+                setUser(false);
+            });
         setLoading(true);
     }, []);
+    if (!user)
+        return (
+            <nav className="h-full xl:w-1/6 sm:w-2/6 sm:relative w-full flex fixed top-0 left-0 border border-violet-300 items-center rounded-lg flex-col justify-between py-16 bg-zinc-900 z-50"></nav>
+        );
     return (
-        <nav className="h-full w-1/6 flex border border-violet-300 items-center rounded-lg flex-col justify-between py-16 bg-zinc-900">
+        <nav className="h-full xl:w-1/6 sm:w-2/6 sm:relative w-full flex fixed top-0 left-0 border border-violet-300 items-center rounded-lg flex-col justify-between py-16 bg-zinc-900 z-50">
             <div className="min-h-[50px] w-full flex justify-center items-center">
                 {loading ? (
                     <UserButton

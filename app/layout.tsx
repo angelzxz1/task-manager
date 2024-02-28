@@ -7,6 +7,7 @@ import NextTopLoader from "nextjs-toploader";
 import { NavBar } from "@/components/nav-bar";
 import { AddTaskButton } from "@/components/add-task";
 import { TaskModal } from "@/components/modals/add-task";
+import { EditTaskModal } from "@/components/modals/edit-task";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
                                 {children}
                                 <AddTaskButton />
                                 <TaskModal />
+                                <EditTaskModal />
                             </section>
                         </main>
                     </body>

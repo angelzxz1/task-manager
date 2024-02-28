@@ -12,9 +12,7 @@ export default async function Home() {
             >
                 All Tasks
             </h1>
-            <section className="py-4 flex gap-4 flex-wrap">
-                <AllTasks />
-            </section>
+            <AllTasks />
         </div>
     );
 }

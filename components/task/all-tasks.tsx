@@ -4,6 +4,7 @@ import { useGlobalContext } from "@/context/global-provider";
 import { Task } from "@prisma/client";
 import { usePathname } from "next/navigation";
 import { TaskCard } from "./task-card";
+import { ScrollArea } from "../ui/scroll-area";
 export const AllTasks = () => {
     const { tasksList, importantTasks, pending, completedTasks, inprogress } =
         useGlobalContext();
@@ -24,5 +25,13 @@ export const AllTasks = () => {
 };
 
 const Tasks = ({ tasks }: { tasks: Task[] }) => {
-    return tasks.map((task) => <TaskCard key={task.id} task={task} />);
+    return (
+        <ScrollArea className="w-full h-[calc(100vh-10rem)]">
+            <section className="py-4 flex gap-4 flex-wrap">
+                {tasks.map((task) => (
+                    <TaskCard key={task.id} task={task} />
+                ))}
+            </section>
+        </ScrollArea>
+    );
 };

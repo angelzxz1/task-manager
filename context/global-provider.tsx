@@ -14,9 +14,12 @@ type GlobalContextType = {
     pending: Task[];
     updateTask: (task: Task) => void;
     modal: boolean;
-    openModal: () => void;
-    closeModal: () => void;
+    editModal: boolean;
+    openModal: (option: "edit" | "create") => void;
+    closeModal: (option: "edit" | "create") => void;
     allTasks: () => void;
+    task: Task | null;
+    currentTask: (task: Task) => void;
 };
 type GlobalUpdateContextType = {
     setTasksList: (tasksList: Task[]) => void;
@@ -31,9 +34,12 @@ export const GlobalContext = createContext<GlobalContextType>({
     pending: [],
     updateTask: () => {},
     modal: false,
-    openModal: () => {},
-    closeModal: () => {},
+    editModal: false,
+    openModal: (option) => {},
+    closeModal: (option) => {},
     allTasks: () => {},
+    task: null,
+    currentTask: () => {},
 });
 export const GlobalUpdateContext = createContext<GlobalUpdateContextType>({
     setTasksList: () => {},
@@ -43,11 +49,26 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     const [tasksList, setTasksList] = useState<Task[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [modal, setModal] = useState(false);
-    const openModal = () => {
-        setModal(true);
+    const [editModal, setEditModal] = useState(false);
+    const [task, setTask] = useState<Task | null>(null);
+
+    const currentTask = (task: Task) => {
+        setTask(task);
     };
-    const closeModal = () => {
-        setModal(false);
+
+    const openModal = (option: "edit" | "create") => {
+        if (option === "edit") {
+            setEditModal(true);
+        } else {
+            setModal(true);
+        }
+    };
+    const closeModal = (option: "edit" | "create") => {
+        if (option === "edit") {
+            setEditModal(false);
+        } else {
+            setModal(false);
+        }
     };
     const allTasks = async () => {
         setIsLoading(true);
@@ -59,8 +80,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
 
             const sorted = res.data.tasks.sort((a, b) => {
                 return (
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime()
+                    new Date(a.createdAt).getTime() -
+                    new Date(b.createdAt).getTime()
                 );
             });
 
@@ -87,7 +108,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
             const res = await axios.put(`/api/tasks`, task);
 
             // toast.success("Task updated");
-
+            setTask(null);
             allTasks();
         } catch (error) {
             console.log(error);
@@ -122,9 +143,12 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
                 pending,
                 updateTask,
                 modal,
+                editModal,
                 openModal,
                 closeModal,
                 allTasks,
+                task,
+                currentTask,
             }}
         >
             <GlobalUpdateContext.Provider value={{ setTasksList }}>

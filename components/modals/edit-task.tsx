@@ -5,11 +5,11 @@ import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { Dialog } from "@/components/modal";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
-import { AddTaskForm } from "./add-task-form";
 import axios from "axios";
+import { EditTaskForm } from "./edit-task-form";
 
-export const TaskModal = () => {
-    const { closeModal, modal, openModal } = useGlobalContext();
+export const EditTaskModal = () => {
+    const { closeModal, editModal, openModal, task } = useGlobalContext();
     const modalref = useRef<HTMLDialogElement>(null);
     const [user, setUser] = useState<boolean>(false);
     useEffect(() => {
@@ -26,12 +26,13 @@ export const TaskModal = () => {
     useEffect(() => {
         const modalRef = modalref.current;
         if (!modalRef) return;
-        if (modal) {
+        if (editModal) {
             modalRef.showModal();
         } else {
             modalRef.close();
         }
     }, [closeModal, openModal]);
+
     if (!user) return null;
     return (
         <Dialog ref={modalref} className="relative">
@@ -39,11 +40,11 @@ export const TaskModal = () => {
                 className="hover:cursor-pointer absolute top-4 right-4"
                 variant="plus"
                 size="icon"
-                onClick={() => closeModal("create")}
+                onClick={() => closeModal("edit")}
             >
                 <X />
             </Button>
-            <AddTaskForm />
+            {!!task ? <EditTaskForm task={task} /> : null}
         </Dialog>
     );
 };
