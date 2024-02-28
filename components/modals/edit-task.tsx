@@ -1,7 +1,7 @@
 "use client";
 
 import { useGlobalContext } from "@/context/global-provider";
-import { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Dialog } from "@/components/modal";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
@@ -9,7 +9,8 @@ import axios from "axios";
 import { EditTaskForm } from "./edit-task-form";
 
 export const EditTaskModal = () => {
-    const { closeModal, editModal, openModal, task } = useGlobalContext();
+    const { closeModal, editModal, openModal, task, currentTask } =
+        useGlobalContext();
     const modalref = useRef<HTMLDialogElement>(null);
     const [user, setUser] = useState<boolean>(false);
     useEffect(() => {
@@ -32,7 +33,9 @@ export const EditTaskModal = () => {
             modalRef.close();
         }
     }, [closeModal, openModal]);
-
+    useEffect(() => {
+        console.log("currentTask", task);
+    }, [currentTask]);
     if (!user) return null;
     return (
         <Dialog ref={modalref} className="relative">
@@ -44,7 +47,7 @@ export const EditTaskModal = () => {
             >
                 <X />
             </Button>
-            {!!task ? <EditTaskForm task={task} /> : null}
+            <EditTaskForm />
         </Dialog>
     );
 };

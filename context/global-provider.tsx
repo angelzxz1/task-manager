@@ -18,7 +18,7 @@ type GlobalContextType = {
     openModal: (option: "edit" | "create") => void;
     closeModal: (option: "edit" | "create") => void;
     allTasks: () => void;
-    task: Task | null;
+    task: Task;
     currentTask: (task: Task) => void;
 };
 type GlobalUpdateContextType = {
@@ -38,7 +38,15 @@ export const GlobalContext = createContext<GlobalContextType>({
     openModal: (option) => {},
     closeModal: (option) => {},
     allTasks: () => {},
-    task: null,
+    task: {
+        id: "",
+        title: "",
+        content: "",
+        status: TaskStatus.PENDING,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        userId: "",
+    },
     currentTask: () => {},
 });
 export const GlobalUpdateContext = createContext<GlobalUpdateContextType>({
@@ -50,7 +58,15 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [modal, setModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
-    const [task, setTask] = useState<Task | null>(null);
+    const [task, setTask] = useState<Task>({
+        id: "aber",
+        title: "",
+        content: "",
+        status: TaskStatus.PENDING,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        userId: "",
+    });
 
     const currentTask = (task: Task) => {
         setTask(task);
@@ -108,7 +124,6 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
             const res = await axios.put(`/api/tasks`, task);
 
             // toast.success("Task updated");
-            setTask(null);
             allTasks();
         } catch (error) {
             console.log(error);

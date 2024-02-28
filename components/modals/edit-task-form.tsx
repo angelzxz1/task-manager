@@ -17,19 +17,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "../ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "lucide-react";
 import { useGlobalContext } from "@/context/global-provider";
 
-const formSchema = z.object({
-    title: z.string().min(3).max(100),
-    content: z.string().min(0).max(500),
-    status: z.nativeEnum(TaskStatus).default(TaskStatus.PENDING),
-});
-
-export const EditTaskForm = ({ task }: { task: Task }) => {
+export const EditTaskForm = () => {
     const [loading, setLoading] = useState(false);
-    const { allTasks } = useGlobalContext();
+    const { allTasks, task, currentTask } = useGlobalContext();
+    const formSchema = z.object({
+        title: z.string().min(3).max(100).default(task.title),
+        content: z.string().min(0).max(500).default(task.content),
+        status: z.nativeEnum(TaskStatus).default(task.status),
+    });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -38,11 +37,23 @@ export const EditTaskForm = ({ task }: { task: Task }) => {
             status: task.status,
         },
     });
+    useEffect(() => {
+        form.reset({
+            title: task.title,
+            content: task.content,
+            status: task.status,
+        });
+    }, [currentTask]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true);
         try {
-            const res = await axios.patch(`/api/tasks/${task.id}`, values);
+            const res = await axios.patch<{ task: Task }>(
+                `/api/tasks/${task?.id}`,
+                values
+            );
+            console.log(res.data);
+            currentTask(res.data.task);
             allTasks();
         } catch (error) {
             console.error("Hubo un error");
@@ -96,6 +107,7 @@ export const EditTaskForm = ({ task }: { task: Task }) => {
                                 <RadioGroup
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
+                                    value={field.value}
                                 >
                                     <FormItem className="">
                                         <FormControl>

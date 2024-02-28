@@ -6,7 +6,6 @@ export const initialProfile = async (): Promise<User> => {
     const user = await currentUser();
 
     if (!user) return redirectToSignIn();
-    console.log("User Found");
     const profile = await db.user.findUnique({
         where: { userId: user.id },
     });
@@ -27,6 +26,5 @@ export const initialProfile = async (): Promise<User> => {
             },
         });
     }
-    console.log("Profile Found and returned");
     return profile;
 };

@@ -37,10 +37,10 @@ export const TaskCard = ({ task }: { task: Task }) => {
                             className="hover:text-red-500"
                             variant="none"
                             size="none"
-                            onClick={() => {
+                            onClick={async () => {
                                 setDeleting(true);
                                 try {
-                                    axios.delete(`/api/tasks/${task.id}`);
+                                    await axios.delete(`/api/tasks/${task.id}`);
                                     allTasks();
                                 } catch (error) {
                                     console.error("Hubo un error");
